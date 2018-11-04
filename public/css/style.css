@@ -1,0 +1,121 @@
+/** Will override bootstrap*/
+
+.wrapper{
+	width: 980px;
+	margin: 0 auto;
+}
+#mother{
+	//background-color: #00ff00;
+	margin-top: 1%;
+}
+
+#result{
+	background-color: cyan;
+	margin-left: auto;
+	margin-right: auto;
+}
+#formDiv{
+	border: solid #777 2px;
+	border-radius: 5px;
+	width: 80%;
+	//max-width: 80%;
+	//min-width: 60%;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 2% 2% 2% 2%;
+	background-color: #fff;
+}
+.wellClass{
+	border: solid #777 2px;
+	border-radius: 20px;
+	width: 80%;
+	//max-width: 80%;
+	//min-width: 60%;
+	//margin-top: 2%;
+	//margin-left: auto;
+	//margin-right: auto;
+	padding: 1% 5% 5% 5%;
+	background-color: #00cc00;
+}
+*{
+	font-family: 'Raleway', sans-serif;
+}
+input.valid, select.valid{
+	border: solid green 1px;
+}
+input.invalid, select.invalid{
+	border: solid red 1px;
+}
+.error{
+	display: none;
+	margin-left: 10px;
+}
+.error_show{
+	color: red;
+	font-size: .8em;
+	margin-left: 10px;
+}
+.overlay{
+	display: none;
+	position: fixed;
+	left: 0;
+	background-color: rgba(0,0,0,0.5);
+	width: 100%;
+	height: 100%;
+	z-index: 2;
+}
+.overlay.active{
+	display: block;
+}
+.overlayContent{
+	position: absolute;
+	border: 3px solid green;
+	border-radius: 5px;
+	top: 25%;
+	left: 25%;
+	width: 50%;
+	height: 50%;
+	background-color: #fff;
+}
+div#level{
+	font-size: 500%;
+}
+div#step{
+	font-size: 200%;
+}
+div#innerContent{
+	padding-top: 5%;
+}
+button:hover{
+	background-color: #fff;
+	color: blue;
+	font-weight: bolder;
+}
+
+.waitLoader{
+	display:none;
+	width:100%;
+	height:100%;
+	//border:1px solid black;
+	position:fixed;
+	background-color: rgba(0,0,0,0.5);
+	top:0;
+	left:0;
+	z-index: 1;
+	//padding:2px;
+}
+.waitLoaderImg{
+	position: relative;
+	top: 45%;
+	left: 45%;
+	height: 3em;
+	width: 3em;
+}
+.bg-stripes{
+	background-image: url("../images/bg-stripes.png");
+	z-index: 1;
+}
+.center{
+	margin-left: auto;
+	margin-right: auto;
+}
