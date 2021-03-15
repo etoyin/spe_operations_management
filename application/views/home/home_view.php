@@ -1,6 +1,6 @@
 <div class="overlay text-center">
   <div class="overlayContent">
-    <i style="color: #000; " class="close fa"><!--&#x2169;-->&#x2716;</i>
+    <i style="color: #000; " class="close fa">&#x2169;</i>
     <div id="innerContent">
       <div id="level"></div><br/>
       <div id="step"></div>
@@ -15,9 +15,12 @@
 <div id="mother" class="row">
   <div class="col-md-2">
     <img src="<?=base_url()?>public/images/spe3.png" height="" width="" class="img-responsive"/>
+    <br/>
+    <h2>Welcome - <?php echo $name  ?> </h2>
+    <button style="color: white;" class="btn btn-success"><a href="<?=base_url()?>Home/logout">Logout</a></button>
   </div>
   <div class="col-md-10">
-    <div id ="" class="well wellClass bg-stripes">
+    <div id ="box" class="well wellClass bg-stripes">
       <h4 class="text-center">Salary Progression Evaluator</h4>
       <div id = "formDiv">
         <!--?php echo validation_errors(); ?-->
@@ -26,9 +29,9 @@
       	<form class="form-group" id="formId" method="post" action="<?= site_url('home/evaluate') ?>" >
       		<div class="trAppend">
                 <div>
-        					<label for="appointment">Date of Appointment:<br/>(mm-dd-yyyy)</label>
+        					<label for="appointment">Date of Appointment:<br/></label>
                   <?php echo form_error('appointDate', '<div class="alert alert-danger">', '</div>'); ?>
-        					<input class="form-control inputDate" id="appointDate" type="date" min="1979-01-01" max="2007-03-31" name="appointDate" value="">
+        					<input class="form-control inputDate" id="appointDate" placeholder="yyyy-mm-dd" type="date" min="1979-01-01" max="2007-03-31" name="appointDate" value="">
                   <span class="error">Please re-enter a correct date!</span><br/>
                 </div>
 
@@ -129,6 +132,7 @@
             $('div#level').html(o.evaluation.level);
             $('div#step').html(o.evaluation.stepcounter);
             $('.overlay').addClass('active');
+            console.log(o);
             //window.location.href = "<?= site_url('home/result') ?>";
           }
         }, 'json');

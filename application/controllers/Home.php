@@ -15,20 +15,26 @@
 			header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 			$method = $_SERVER['REQUEST_METHOD'];
 			if($method == "OPTIONS") { die(); }
+
+			$username = $this->session->userdata('username');
+			if(!$username){
+				$this->logout();
+			}
 		}
+
+/*-----------App Page (dashboard)--------------------------------*/
 		public function index()
 		{
-
-			//$re = "((19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))";
-
-
+			$data = array('name' => $this->session->userdata('username') , );
 			$this->load->view('home/inc/header_view');
-			$this->load->view('home/home_view');
+			$this->load->view('home/home_view', $data);
 			$this->load->view('home/inc/footer_view');
-
 		}
-
-//		public $result;
+		function logout()
+		{
+			$this->session->sess_destroy();
+			redirect('/');
+		}
 
 		public function evaluate()
 		{
@@ -46,11 +52,11 @@
 		  }
 
 		  //$this->load->helper('url')
-		if($this->form_validation->run()==false){
-		  //this result to be used by the client side(JavaScript)
-		  $this->output->set_output(json_encode(['result' => 0, 'error' => $this->form_validation->error_array()]));
-			return false;
-		  }
+			if($this->form_validation->run()==false){
+				//this result to be used by the client side(JavaScript)
+				$this->output->set_output(json_encode(['result' => 0, 'error' => $this->form_validation->error_array()]));
+				return false;
+			}
 
 
 
@@ -62,193 +68,229 @@
 		  $stepAppoint = $this->input->post('stepAppoint');
 			//$dob = $this->input->post('dob');
 
+			
 
 		  //$_POST['datePromotion'][0];
 
 		  function noPromStepcounter($start, $stepcounter){
-		    while (strtotime($start) < strtotime('2007-03-31')) {
-					if (strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1989-1-1')) {
-						switch ($stepcounter) {
-							// Case 1 actually, the increment will take effect after this switch statement
-							case 0:
-								if (strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1988-7-1')) {
-									$stepcounter = $stepcounter + 0;
-									$start = '1989-1-1';
-								}
-								if (strtotime($start) >= strtotime('1988-7-1') and strtotime($start) < strtotime('1989-1-1')) {
-									$stepcounter = $stepcounter + 1;
-									$start = '1989-7-1';
-								}
-								break;
-							// same as in case 0
-							case 1:
-								$stepcounter = $stepcounter + 0;
-								$start = '1989-1-1';
-								break;
-							case 2:
-								$stepcounter = $stepcounter + 0;
-								$start = '1989-7-1';
-								break;
-							case 3:
-								$stepcounter = $stepcounter - 1;
-								$start = '1989-1-1';
-								break;
-							case 4:
-								$stepcounter = $stepcounter - 1;
-								$start = '1989-7-1';
-								break;
-							case 5:
-								$stepcounter = $stepcounter - 2;
-								$start = '1989-1-1';
-								break;
-							case 6:
-								$stepcounter = $stepcounter - 2;
-								$start = '1989-7-1';
-								break;
-							//default:
-								# code...
-								//break;
-						}
-						continue;
-					}
-
-		      if(strtotime($start) >= strtotime('1989-1-1')){
-		        //$year = 1989;
-		        for ($year=1989; $year <= 2007; $year++) {
-		          if (strtotime($start) == strtotime("$year-1-1") and strtotime($start) == strtotime("$year-7-1")) {
-		            break;
-		          }
-		          if(strtotime($start) > strtotime("$year-1-1") and strtotime($start) < strtotime("$year-7-1") ){
-		            $start = "$year-1-1";
-		            break;
-		          }
-		          if(strtotime($start) > strtotime("$year-7-1") and strtotime($start) <= strtotime("$year-12-31") ){
-		            $start = "$year-7-1";
-		            break;
-		          }
-		        }
-		      }
-		      $stepcounter = $stepcounter + 1;
-		      $start = date("Y-m-d", strtotime('+1 year', strtotime($start)));
-		    }
-		    return $stepcounter;
-		  }
-
-		  function stepcounter($start, $date_of_promotion, $stepcounter, $prev_level, $level_at_promotion, $data, $appointDate){
-				//$appointDate = $this->input->post('appointDate');
-		    while(strtotime($start) < strtotime($date_of_promotion)){
+				$originalStart = $start;
+				$monthCounter = 0;
+				$enterIncrement = true;
+				$count88 = true;
+		    while(strtotime($start) < strtotime("1991-01-01")){
+					
 				// for those that got appointment in 1988
-
-		      if (strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1989-1-1') and strtotime($start) == strtotime($appointDate)) {
-		        switch ($stepcounter) {
-		          case 0:
+		      if ($count88 and strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1989-1-1')) {
+						switch ($stepcounter) {
+		          case 1:
 		            if (strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1988-7-1')) {
 		              $stepcounter = $stepcounter + 0;
-		              $start = '1989-1-1';
+		              $start = '1988-1-1';
 		            }
 		            if (strtotime($start) >= strtotime('1988-7-1') and strtotime($start) < strtotime('1989-1-1')) {
 		              $stepcounter = $stepcounter + 1;
-		              $start = '1989-7-1';
+		              $start = '1988-7-1';
 		            }
-		            break;
-		          case 1:
-		            $stepcounter = $stepcounter + 0;
-		            $start = '1989-1-1';
+								$count88 = false;
 		            break;
 		          case 2:
 		            $stepcounter = $stepcounter + 0;
-		            $start = '1989-7-1';
+		            $start = '1988-1-1';
+								$count88 = false;
 		            break;
 		          case 3:
-		            $stepcounter = $stepcounter - 1;
-		            $start = '1989-1-1';
+		            $stepcounter = $stepcounter + 0;
+		            $start = '1988-7-1';
+								$count88 = false;
 		            break;
 		          case 4:
 		            $stepcounter = $stepcounter - 1;
-		            $start = '1989-7-1';
+		            $start = '1988-1-1';
+								$count88 = false;
 		            break;
 		          case 5:
-		            $stepcounter = $stepcounter - 2;
-		            $start = '1989-1-1';
+		            $stepcounter = $stepcounter - 1;
+		            $start = '1988-7-1';
+								$count88 = false;
 		            break;
 		          case 6:
 		            $stepcounter = $stepcounter - 2;
-		            $start = '1989-7-1';
+		            $start = '1988-1-1';
+								$count88 = false;
+		            break;
+		          case 7:
+		            $stepcounter = $stepcounter - 2;
+		            $start = '1988-7-1';
+								$count88 = false;
 		            break;
 		          //default:
 		            # code...
 		            //break;
 		        }
-		        continue;
 		      }
 
-		      if(strtotime($start) >= strtotime('1989-1-1')){
-		        //$year = 1989;
-		        for ($year=1989; $year <= 2007; $year++) {
-		          if (strtotime($start) == strtotime("$year-1-1") or strtotime($start) == strtotime("$year-7-1")) {
-		            break;
-		          }
-		          if(strtotime($start) > strtotime("$year-1-1") and strtotime($start) < strtotime("$year-7-1") ){
-		            $start = "$year-1-1";
-		            break;
-		          }
-		          if(strtotime($start) > strtotime("$year-7-1") and strtotime($start) <= strtotime("$year-12-31") ){
-		            $start = "$year-7-1";
-		            break;
-		          }
-		        }
-		      }
-						// for those that got appointment before 1988
-
-					if (strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1989-1-1')) {
-						switch ($stepcounter) {
-							case 1:
-								if (strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1988-7-1')) {
-									$stepcounter = $stepcounter + 0;
-									$start = '1989-1-1';
-								}
-								if (strtotime($start) >= strtotime('1988-7-1') and strtotime($start) < strtotime('1989-1-1')) {
-									$stepcounter = $stepcounter + 1;
-									$start = '1989-7-1';
-								}
-								break;
-							case 2:
-								$stepcounter = $stepcounter + 0;
-								$start = '1989-1-1';
-								break;
-							case 3:
-								$stepcounter = $stepcounter + 0;
-								$start = '1989-7-1';
-								break;
-							case 4:
-								$stepcounter = $stepcounter - 1;
-								$start = '1989-1-1';
-								break;
-							case 5:
-								$stepcounter = $stepcounter - 1;
-								$start = '1989-7-1';
-								break;
-							case 6:
-								$stepcounter = $stepcounter - 2;
-								$start = '1989-1-1';
-								break;
-							case 7:
-								$stepcounter = $stepcounter - 2;
-								$start = '1989-7-1';
-								break;
-							//default:
-								# code...
-								//break;
+					//for thiose that started work after 1988
+					if(strtotime($originalStart) >= strtotime('1989-1-1') and $enterIncrement){
+						$count88 = false;
+						$year = date("Y", strtotime($originalStart));
+						
+						if(strtotime($originalStart) > strtotime("$year-1-1") and strtotime($originalStart) < strtotime("$year-7-1") ){
+							$start = "$year-1-1";
+							$enterIncrement = false;
 						}
-						continue;
+						if(strtotime($originalStart) > strtotime("$year-7-1") and strtotime($originalStart) <= strtotime("$year-12-31") ){
+							$start = "$year-7-1";
+							$enterIncrement = false;
+						}
 					}
 
+					if($count88 == false){
+						$start = date("Y-m-d", strtotime('+1 month', strtotime($start)));
+						$monthCounter = $monthCounter + 1;
+						if($monthCounter === 12){
+							$stepcounter = $stepcounter + 1;
+							$monthCounter = 0;
+						}
+					}else{
+						$is11 = $monthCounter == 11;
+						$startMonth = date("m", strtotime($originalStart));
+						$startday = date("d", strtotime($start));
+						//$promotionMonth = date("m", strtotime($))
 
-		      $stepcounter = $stepcounter + 1;
-		      $start = date("Y-m-d", strtotime('+1 year', strtotime($start)));
+						if($is11 and ($startMonth == 01 or $startMonth == 07) and $startday > 01){
+							$start = date("Y-m-d", strtotime('+1 day', strtotime($start)));
+							//$this->output->set_output(json_encode(["result" =>1, "uiu" => $start]));
+						}
+						else{
+							$start = date("Y-m-d", strtotime('+1 month', strtotime($start)));
+							$monthCounter = $monthCounter + 1;
+							//$this->output->set_output(json_encode(['result' => 1,'ty' => $monthCounter]));
+						}
+						if($monthCounter === 12){
+							$stepcounter = $stepcounter + 1;
+							$monthCounter = 0;
+						}
+					}
+		    }
+		    return $stepcounter;
+		  }
+
+		  function stepcounter(	$start, 
+														$date_of_promotion, 
+														$stepcounter, 
+														$prev_level, 
+														$level_at_promotion, 
+														$data, 
+														$appointDate){
+				//$appointDate = $this->input->post('appointDate');
+				$originalStart = $start;
+				$monthCounter = 0;
+				$count88 = true;
+				$enterIncrement = true;
+		    while(strtotime($start) < strtotime($date_of_promotion)){
+				// for those that got appointment in 1988
+		      if ($count88 and strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1989-1-1')) {
+						switch ($stepcounter) {
+		          case 1:
+		            if (strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1988-7-1')) {
+		              $stepcounter = $stepcounter + 0;
+		              $start = '1988-1-1';
+		            }
+		            if (strtotime($start) >= strtotime('1988-7-1') and strtotime($start) < strtotime('1989-1-1')) {
+		              $stepcounter = $stepcounter + 1;
+		              $start = '1988-7-1';
+		            }
+								$count88 = false;
+		            break;
+		          case 2:
+		            $stepcounter = $stepcounter + 0;
+		            $start = '1988-1-1';
+								$count88 = false;
+		            break;
+		          case 3:
+		            $stepcounter = $stepcounter + 0;
+		            $start = '1988-7-1';
+								$count88 = false;
+		            break;
+		          case 4:
+		            $stepcounter = $stepcounter - 1;
+		            $start = '1988-1-1';
+								$count88 = false;
+		            break;
+		          case 5:
+		            $stepcounter = $stepcounter - 1;
+		            $start = '1988-7-1';
+								$count88 = false;
+		            break;
+		          case 6:
+		            $stepcounter = $stepcounter - 2;
+		            $start = '1988-1-1';
+								$count88 = false;
+		            break;
+		          case 7:
+		            $stepcounter = $stepcounter - 2;
+		            $start = '1988-7-1';
+								$count88 = false;
+		            break;
+		          //default:
+		            # code...
+		            //break;
+		        }
+		      }
+
+		      if(strtotime($originalStart) >= strtotime('1989-1-1') and $enterIncrement){
+						$count88 = false;
+						$year = date("Y", strtotime($originalStart));
+						
+						if(strtotime($originalStart) > strtotime("$year-1-1") and strtotime($originalStart) < strtotime("$year-7-1") ){
+							$start = "$year-1-1";
+							$enterIncrement = false;
+						}
+						if(strtotime($originalStart) > strtotime("$year-7-1") and strtotime($originalStart) <= strtotime("$year-12-31") ){
+							$start = "$year-7-1";
+							$enterIncrement = false;
+						}
+					}
+						
+
+					if($count88 == false){
+						$start = date("Y-m-d", strtotime('+1 month', strtotime($start)));
+						$monthCounter = $monthCounter + 1;
+
+						if($monthCounter === 12){
+							$stepcounter = $stepcounter + 1;
+							$monthCounter = 0;
+						}
+					}else{
+						$is11 = $monthCounter == 11;
+						$startMonth = date("m", strtotime($originalStart));
+						$startday = date("d", strtotime($start));
+						//$promotionMonth = date("m", strtotime($))
+
+						if($is11 and ($startMonth == 01 or $startMonth == 07) and $startday > 01){
+							$start = date("Y-m-d", strtotime('+1 day', strtotime($start)));
+							//$this->output->set_output(json_encode(["result" =>1, "uiu" => $start]));
+						}
+						else{
+							$start = date("Y-m-d", strtotime('+1 month', strtotime($start)));
+							$monthCounter = $monthCounter + 1;
+							//$this->output->set_output(json_encode(['result' => 1,'ty' => $monthCounter]));
+						}
+
+						if($monthCounter === 12){
+							$stepcounter = $stepcounter + 1;
+							$monthCounter = 0;
+						}
+					}
+					
 		    }
 //---------for those that got their promotion in the year 1988----------------------------------------------------------------------------------------------------------
-
+				if($level_at_promotion >= 12){
+					$level_at_promotion = $level_at_promotion - 1;
+				}
+				if($prev_level >= 12){
+					$prev_level = $prev_level - 1;
+				}
 		    //return $step;
 		    foreach ($data[$level_at_promotion - 1] as $key => $value) {
 		      if($data[$prev_level-1][$stepcounter + 1 ] <= $data[$level_at_promotion - 1][$key]){
@@ -267,13 +309,13 @@
 		  //$_POST['levelProm'][0]
 		  $startdate = $appointDate;
 		  $prev_level = $levelAppoint;
-
 		  $stepcounter = $stepAppoint;
+
 		  if (isset($_POST['datePromotion'])) {
 		      $data=$this->home_model->get_table($_POST['datePromotion'][0]);
 		      $stepcounter = stepcounter($startdate,
 		                                  $_POST['datePromotion'][0],
-		                                  $stepcounter = $stepcounter - 1,
+		                                  $stepcounter,
 		                                  $prev_level,
 		                                  $_POST['levelProm'][0],
 		                                  $data,
@@ -285,7 +327,7 @@
 		        $data=$this->home_model->get_table($_POST['datePromotion'][$i]);
 		        $stepcounter = stepcounter($_POST['datePromotion'][$i-1],
 		                                    $_POST['datePromotion'][$i],
-		                                    $stepcounter = $stepcounter - 1,
+		                                    $stepcounter,
 		                                    $_POST['levelProm'][$i-1],
 		                                    $_POST['levelProm'][$i],
 		                                    $data,
@@ -296,34 +338,25 @@
 
 		      }
 
-		      $stepcounter = $stepcounter - 1;
+		      //$stepcounter = $stepcounter - 1;
 		      $lastElement = sizeof($_POST['datePromotion']) - 1;
 		      $start = $_POST['datePromotion'][$lastElement];
+					$monthCounter = 0;
+					$enterIncrement = true;
 		      while (strtotime($start) < strtotime('2007-03-31') ) {
-		        if(strtotime($start) >= strtotime('1989-1-1')){
-		          //$year = 1989;
-		          for ($year=1989; $year <= 2007; $year++) {
-		            if (strtotime($start) == strtotime("$year-1-1") or strtotime($start) == strtotime("$year-7-1") ){
-		              break;
-		            }
-		            if(strtotime($start) > strtotime("$year-1-1") and strtotime($start) < strtotime("$year-7-1") ){
-		              $start = "$year-1-1";
-		              break;
-		            }
-		            if(strtotime($start) > strtotime("$year-7-1") and strtotime($start) <= strtotime("$year-12-31") ){
-		              $start = "$year-7-1";
-		              break;
-		            }
-		          }
-		        }
-		        $stepcounter = $stepcounter + 1;
-		        $start = date("Y-m-d", strtotime('+1 year', strtotime($start)));
+		        $start = date("Y-m-d", strtotime('+1 month', strtotime($start)));
+						$monthCounter = $monthCounter + 1;
+
+						if($monthCounter == 12){
+							$stepcounter = $stepcounter + 1;
+							$monthCounter = 0;
+						}
 		      }
 
 				  $level = $_POST['levelProm'][$lastElement];
 		  }
 		  else{
-		    $stepcounter = $stepcounter - 1;
+		    //$stepcounter = $stepcounter - 1;
 		    $stepcounter = noPromStepcounter($startdate, $stepcounter);
 		    $level = $levelAppoint;
 		  }
@@ -351,11 +384,6 @@
 			if($result){
 				$this->output->set_output(json_encode(['result' => 1, 'evaluation' => $result]));
 			}
-
-
-		  //print_r($data);
-
-		  //print_r($stepcount);*/
 
 
 		}
