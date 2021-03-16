@@ -1,5 +1,4 @@
 $(document).ready(function(){
-//	alert("why y'all!!!!!");
 	//var promDiv = $('#promDiv');
 	var i = $('#promDiv').size();
 
@@ -10,7 +9,37 @@ $(document).ready(function(){
 	var phpErrorLevel = '<?php echo form_error("levelProm[]", divAlert , closeDiv);?>';
 
 	$('#addProm').live('click', function(){
-		$("#promDiv").append('<div class="append"><div><label>Date of Promotion/ Advancement:</label>'+phpErrorDate+'<input class="form-control inputDate" id="datePromotion" type="date" min="1979-01-01" max="2007-03-31" name="datePromotion[]" value=""/></div><div><label>Level of Promotion.</label>'+phpErrorLevel+'<select class="form-control inputLevel" id="levelProm" name="levelProm[]"><option value="0">Select Level</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option><option value="6">6</option><option value="7">7</option><option value="8">8</option><option value="9">9</option><option value="10">10</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option></select></div><br/><div><a class="btn btn-primary btn-sm" id="remInput">Remove</a></div></div>');
+		$("#promDiv").append(`<div class="append">
+														<div>
+															<label>Date of Promotion/ Advancement:</label>
+															<input class="form-control inputDate" id="datePromotion" type="date" min="1979-01-01" max="2007-03-31" name="datePromotion[]" value=""/></div>
+															<div>
+																<label>Level of Promotion.</label>
+																<select class="form-control inputLevel" id="levelProm" name="levelProm[]">
+																	<option value="0">Select Level</option>
+																	<option value="1">1</option>
+																	<option value="2">2</option>
+																	<option value="3">3</option>
+																	<option value="4">4</option>
+																	<option value="5">5</option>
+																	<option value="6">6</option>
+																	<option value="7">7</option>
+																	<option value="8">8</option>
+																	<option value="9">9</option>
+																	<option value="10">10</option>
+																	<option value="12">12</option>
+																	<option value="13">13</option>
+																	<option value="14">14</option>
+																	<option value="15">15</option>
+																	<option value="16">16</option>
+																	<option value="17">17</option>
+																</select>
+															</div>
+															<br/>
+															<div>
+															<a class="btn btn-primary btn-sm" id="remInput">Remove</a>
+															</div>
+														</div>`);
 		i++;
 
 		return false;
@@ -45,8 +74,27 @@ $(document).ready(function(){
 		}
 	}
 
-	$("#levelAppoint").on('change', changeFunc);
-/*
+	//$("#levelAppoint").on('change', changeFunc);
+
+	$("#sections").on('change', function(){
+		console.log("object");
+		let sections = $("#sections").val();
+		if(sections == "mainstream"){
+			$(".sections_div").append(`
+			<select class= 'form-control ' id='mainstream' name='mainstream'>
+				<option value="">Select an option</option>
+				<option value="standard">Standard</option>
+			</select>
+			`)
+		}
+		else{
+			$("#mainstream").remove();
+		}
+	})
+
+
+
+	/*
 
 
 	$(".inputDate").on('input', function(){

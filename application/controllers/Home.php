@@ -44,12 +44,18 @@
 		  $this->form_validation->set_rules('appointDate', 'Date of appointment', 'required|exact_length[10]');
 		  $this->form_validation->set_rules('levelAppoint', 'Level of appointment', 'required|numeric|greater_than[0]', array('greater_than' => 'Select a Level in this field'));
 		  $this->form_validation->set_rules('stepAppoint', 'Step of appointment', 'required|numeric|greater_than[0]', array('greater_than' => 'Select a Step in this field'));
+			$this->form_validation->set_rules('sections', 'Section', 'required', array('required' => 'Select a Section'));
+
 
 		  if (isset($_POST['datePromotion']) and isset($_POST['levelProm']) ) {
 		    $this->form_validation->set_rules('datePromotion[]', 'Date of Promotion', 'required|exact_length[10]');
 		    $this->form_validation->set_rules('levelProm[]', 'Level of Promotion', 'required|numeric|greater_than[0]', array('greater_than' => 'Select a Promotion Level in this field'));
 		    //$this->form_validation->set_rules('levelProm', 'Level of Promotion', 'required|numeric');
 		  }
+
+			if(isset($_POST['mainstream'])){
+				$this->form_validation->set_rules('mainstream', 'Mainstream', 'required', array('required' => 'Select a Section in Mainstream'));
+			}
 
 		  //$this->load->helper('url')
 			if($this->form_validation->run()==false){
@@ -66,6 +72,10 @@
 		  $appointDate = $this->input->post('appointDate');
 		  $levelAppoint = $this->input->post('levelAppoint');
 		  $stepAppoint = $this->input->post('stepAppoint');
+			$sections = $this->input->post('sections');
+			if($sections == 'mainstream'){
+				$mainstream = $this->input->post('mainstream');
+			}
 			//$dob = $this->input->post('dob');
 
 			
@@ -77,7 +87,7 @@
 				$monthCounter = 0;
 				$enterIncrement = true;
 				$count88 = true;
-		    while(strtotime($start) < strtotime("1991-01-01")){
+		    while(strtotime($start) < strtotime("2007-03-31")){
 					
 				// for those that got appointment in 1988
 		      if ($count88 and strtotime($start) >= strtotime('1988-1-1') and strtotime($start) < strtotime('1989-1-1')) {
@@ -181,7 +191,8 @@
 														$prev_level, 
 														$level_at_promotion, 
 														$data, 
-														$appointDate){
+														$appointDate,
+														$sections){
 				//$appointDate = $this->input->post('appointDate');
 				$originalStart = $start;
 				$monthCounter = 0;
@@ -291,9 +302,13 @@
 				if($prev_level >= 12){
 					$prev_level = $prev_level - 1;
 				}
+				$progressor = 1;
+				if($sections == 'subeb' or $sections == 'local'){
+					$progressor = 0;
+				}
 		    //return $step;
 		    foreach ($data[$level_at_promotion - 1] as $key => $value) {
-		      if($data[$prev_level-1][$stepcounter + 1 ] <= $data[$level_at_promotion - 1][$key]){
+		      if($data[$prev_level-1][$stepcounter + $progressor ] <= $data[$level_at_promotion - 1][$key]){
 		        $stepcounter = $key;
 		        //echo "$key\n";
 		        break;
@@ -312,26 +327,39 @@
 		  $stepcounter = $stepAppoint;
 
 		  if (isset($_POST['datePromotion'])) {
-		      $data=$this->home_model->get_table($_POST['datePromotion'][0]);
+
+					$data=$this->home_model->get_main_tepo_table($_POST['datePromotion'][0]);
+					if($sections == 'local' or $sections == 'subeb'){
+						$data=$this->home_model->get_localSubeb_table($_POST['datePromotion'][0]);
+					}
+		      
 		      $stepcounter = stepcounter($startdate,
 		                                  $_POST['datePromotion'][0],
 		                                  $stepcounter,
 		                                  $prev_level,
 		                                  $_POST['levelProm'][0],
 		                                  $data,
-																			$appointDate);
+																			$appointDate,
+																			$sections);
 
 		      $i = 1;
 		      while ($i < sizeof($_POST['datePromotion'])) {
-		        //initialize previous level tolevel at appointment
-		        $data=$this->home_model->get_table($_POST['datePromotion'][$i]);
+						$data=$this->home_model->get_main_tepo_table($_POST['datePromotion'][$i]);
+					
+						if($sections == 'local' or $sections == 'subeb'){
+							$data=$this->home_model->get_localSubeb_table($_POST['datePromotion'][$i]);
+						}
+					
+						//initialize previous level tolevel at appointment
+		        //$data=$this->home_model->get_table($_POST['datePromotion'][$i]);
 		        $stepcounter = stepcounter($_POST['datePromotion'][$i-1],
 		                                    $_POST['datePromotion'][$i],
 		                                    $stepcounter,
 		                                    $_POST['levelProm'][$i-1],
 		                                    $_POST['levelProm'][$i],
 		                                    $data,
-																				$appointDate);
+																				$appointDate,
+																				$sections);
 
 		        //$prev_level = $_POST['levelProm'][$i];
 		        $i = $i + 1;

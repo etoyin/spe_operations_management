@@ -28,16 +28,28 @@
         <div id="formError" class="alert alert-danger"><!--Dynamic error div--></div>
       	<form class="form-group" id="formId" method="post" action="<?= site_url('home/evaluate') ?>" >
       		<div class="trAppend">
+                <div class="sections_div">
+        					<label for="appointment">Select a Section<br/></label>
+                  
+        					<select class="form-control" id="sections" name="sections">
+                    <option value="">Select a Section</option>
+                    <option value="tepo">TEPO</option>
+                    <option value="subeb">SUBEB</option>
+                    <option value="local">Local Government</option>
+                    <option value="mainstream">Mainstream</option>
+                  </select>
+                  <span class="error">Please re-enter a correct date!</span><br/>
+                </div>
                 <div>
         					<label for="appointment">Date of Appointment:<br/></label>
-                  <?php echo form_error('appointDate', '<div class="alert alert-danger">', '</div>'); ?>
+                  
         					<input class="form-control inputDate" id="appointDate" placeholder="yyyy-mm-dd" type="date" min="1979-01-01" max="2007-03-31" name="appointDate" value="">
                   <span class="error">Please re-enter a correct date!</span><br/>
                 </div>
 
                 <div>
       					  <label for="levelAppoint">Level at Appointment</label>
-                  <?php echo form_error('levelAppoint', '<div class="alert alert-danger">', '</div>'); ?>
+                  
                   <select class="form-control inputLevel" id="levelAppoint" name="levelAppoint" value="">
                     <option value="0">Select Level of appointment</option>
                     <option value="1">1</option>
@@ -62,7 +74,7 @@
 
                 <div>
                   <label for="stepAppoint">Step at Appointment</label>
-                  <?php echo form_error('stepAppoint', '<div class="alert alert-danger">', '</div>'); ?>
+                  
                   <select class="form-control inputStep input" id="stepAppoint" name="stepAppoint" value="<?php $stepAppoint ?>">
                     <option value="0"> Select Step at appointment </option>
                     <option value="1"> 1 </option>
@@ -97,7 +109,6 @@
       		</div>
           </br>
           <button class="btn btn-md btn-primary" id="evaluate" type="submit" value="Evaluate"> Evaluate </button>
-
       	</form>
       </div>
     </div>
@@ -105,6 +116,7 @@
 </div>
 <script>
     $(document).ready(function(){
+
       $(document).ajaxStart(function(){
         $(".waitLoader").css("display", "block");
       });
@@ -145,9 +157,8 @@
     });
 
 </script>
-	<script src="<?=base_url()?>public/js/script.js" type="text/javascript"></script>
-  <noscript>
-    <h2 class="text-center">Your browser does not support JavaScript!</h2>
-    <h3>We recommend you use google chrome or firefox or enable javascript on your browser fpr a better experience. </h3>
+<noscript>
+  <h2 class="text-center">Your browser does not support JavaScript!</h2>
+  <h3>We recommend you use google chrome or firefox or enable javascript on your browser fpr a better experience. </h3>
 
-  </noscript>
+</noscript>

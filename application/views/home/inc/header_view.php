@@ -11,6 +11,8 @@
 		<script src="<?=base_url()?>public/js/bootstrap.js" type="text/javascript"></script>
 		<script src="<?=base_url()?>public/js/jquery-3.2.1.min.js" type="text/javascript"></script>
 		<script src="<?=base_url()?>public/js/jquery-1.7.js" type="text/javascript"></script>
+		<script src="<?=base_url()?>public/js/script.js" type="text/javascript"></script>
+		
 
 	</head>
 	<body>
