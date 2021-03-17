@@ -117,6 +117,8 @@
 <script>
     $(document).ready(function(){
 
+      window.localStorage.setItem('login', 'login');
+
       $(document).ajaxStart(function(){
         $(".waitLoader").css("display", "block");
       });
@@ -153,6 +155,7 @@
       $('.close').on('click', function(){
         $('.overlay').removeClass('active');
       });
+      console.log(window.localStorage.getItem('login'));
 //----------------------------------------------------------------------------------------------------
     });
 
