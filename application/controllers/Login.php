@@ -15,12 +15,18 @@
 			header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 			$method = $_SERVER['REQUEST_METHOD'];
 			if($method == "OPTIONS") { die(); }
+
+			$username = $this->session->userdata('username');
+			if($username){
+				redirect(base_url(). 'Home');
+			}
 		}
 
 /*----------------login page--------------------------*/
 
 		public function index()
 		{
+			
 			//$re = "((19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))";
 			$this->load->view('home/inc/header_view');
 			$this->load->view('home/login_view');
@@ -49,10 +55,12 @@
 			if($this->Login_model->can_login($username, $password)){
 				$session_data = array('username' => $username );
 				$this->session->set_userdata($session_data);
-				redirect(base_url(). 'Home');
+				$this->output->set_output(json_encode(['result' => 1]));
+				//redirect(base_url(). 'Home');
 			}else{
 				$this->session->set_flashdata('error', 'Invalid username and Password');
-				redirect(base_url(). '/');
+				$this->output->set_output(json_encode(['result' => 0]));
+				//redirect(base_url(). '/');
 
 			}
 		}

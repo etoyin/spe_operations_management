@@ -22,6 +22,13 @@
 			.w3-half img{margin-bottom:-6px;margin-top:16px;opacity:0.8;cursor:pointer}
 			.w3-half img:hover{opacity:1}
 		</style>
+		<script>
+			$(document).ready(function(){
+				 if(localStorage.getItem('login') && localStorage.getItem('login') == 'success'){
+					 $('#logout').removeClass('displayNone');
+				 }
+			})
+		</script>
 		
 
 	</head>
@@ -33,9 +40,9 @@
         <h3 class="w3-padding-64"><b>Operations<br>Management</b></h3>
       </div>
       <div class="w3-bar-block">
-        <a href="#" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
-        <a href="#showcase" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Salary Progression Evaluator</a> 
-        <a href="#showcase" onclick="w3_close()" class="w3-bar-item displayNone w3-button w3-hover-white">Logout</a> 
+        <a href="/" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Home</a> 
+        <a href="Salary_Progression" onclick="w3_close()" class="w3-bar-item w3-button w3-hover-white">Salary Progression Evaluator</a> 
+        <a href="<?=base_url()?>Home/logout" onclick="w3_close()" id='logout' class="w3-bar-item displayNone w3-button w3-hover-white">Logout</a> 
         
       </div>
     </nav>

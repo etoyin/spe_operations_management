@@ -127,6 +127,9 @@ footer{
 	margin-top: 5%;
 	margin-bottom: 5%;
 }
+.modules{
+	border: 2px solid #555;
+}
 .displayNone{
 	display: none !important;
 }
